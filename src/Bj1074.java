@@ -2,18 +2,22 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
-
+// Z
+// 4진수 다루기.
+// 분할 정복.
 public class Bj1074 {
     static int quaternary[];
     static int N;
     static void makeSpace(int dep,int ci, int cj, int size){
         if(dep == N){
             int ans = 0;
-            for(int i=quaternary.length-1;i>=0;i--){
-                ans*=4;
-                ans+=quaternary[i];
+            int quarter = 1;
+            for(int i=N-1;i>=0;i--){
+                ans+=quaternary[i]*quarter;
+                quarter*=4;
             }
             System.out.println(ans);
+            return;
         }
         int half = size / 2;
         if(ci < half){
@@ -22,15 +26,15 @@ public class Bj1074 {
                 makeSpace(dep+1,ci,cj,half);
             } else{
                 quaternary[dep] = 1;
-                makeSpace(dep+1,ci,cj+half,half);
+                makeSpace(dep+1,ci,cj%half,half);
             }
         } else{
             if(cj < half){
                 quaternary[dep] = 2;
-                makeSpace(dep+1,ci+half,cj,half);
+                makeSpace(dep+1,ci%half,cj,half);
             } else{
                 quaternary[dep] = 3;
-                makeSpace(dep+1,ci+half,cj+half,half);
+                makeSpace(dep+1,ci%half,cj%half,half);
             }
         }
     }
@@ -44,6 +48,6 @@ public class Bj1074 {
 
         quaternary = new int[N];
 
-        makeSpace(0,0,0,1<<N);
+        makeSpace(0,r,c,1<<N);
     }
 }
