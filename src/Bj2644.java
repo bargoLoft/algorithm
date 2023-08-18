@@ -1,9 +1,12 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Queue;
 import java.util.StringTokenizer;
 
+// 촌수 계산
 public class Bj2644 {
     static ArrayList<Data> [] list;
 
@@ -16,10 +19,10 @@ public class Bj2644 {
             this.w = w;
         }
 
-//        @Override
-//        public void toString(){
-//
-//        }
+        @Override
+        public String toString(){
+            return y + " " + w;
+        }
     }
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -47,8 +50,17 @@ public class Bj2644 {
             list[y].add(new Data(y,x));
         }
 
-        for(ArrayList l : list){
-            System.out.println(l.toString());
+//        for(ArrayList l : list){
+//            System.out.println(l.toString());
+//        }
+
+        Queue<Integer> q = new ArrayDeque<>();
+        int[] isVisited = new int[n+1];
+        q.offer(a);
+        isVisited[a] = 1;
+
+        while(!q.isEmpty()){
+
         }
 
     }
