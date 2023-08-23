@@ -4,6 +4,9 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 // 줄기세포 배양.
+// priorityQueue!!
+// compareTo..!!
+// reverseOrder..!!!!!
 public class Swea5653 {
     static class Cell implements Comparable<Cell> {
         int x;
@@ -14,17 +17,19 @@ public class Swea5653 {
         public Cell(int x, int y, int level, int hp) {
             this.x = x;
             this.y = y;
-            this.level = level;
-            this.life = hp;
+            this.level = level; // 3
+            this.life = hp; // 6 -> 6 5 4 3 2 1 0
         }
 
         @Override
         public int compareTo(Cell target) {
-            //target 이 어떤 대우를 받느냐?
-            //타켓이 클 때(==큰 순서대로 뽑기) 양수 리턴.
-            return this.level >= target.level ? 1 : -1;
+            // 양수 -> 바꿈.
+            // this, target 순서대로.
+            // 내림차순.
+            return (this.level - target.level) * -1;
         }
     }
+    //저는 1초마다 해서 그냥 생명력 쌘 애가 먼저..
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -38,16 +43,16 @@ public class Swea5653 {
             int M = Integer.parseInt(st.nextToken());
             int K = Integer.parseInt(st.nextToken());
 
-            Cell[][] map = new Cell[N + 300][M + 300];
+            Cell[][] map = new Cell[N + 400][M + 400];
 
             int[] dx = {-1, 1, 0, 0};
             int[] dy = {0, 0, -1, 1};
 
-            PriorityQueue<Cell> q = new PriorityQueue<>(Collections.reverseOrder());
+            PriorityQueue<Cell> q = new PriorityQueue<>(); // reverseorder.......
 
             // 초기 세팅.
-            for (int i = 0; i < N + 300; i++) {
-                for (int j = 0; j < M + 300; j++) {
+            for (int i = 0; i < N + 400; i++) {
+                for (int j = 0; j < M + 400; j++) {
                     map[i][j] = new Cell(i, j, -1, -1);
                 }
             }
@@ -57,42 +62,41 @@ public class Swea5653 {
                 for (int j = 0; j < M; j++) {
                     int tmp = Integer.parseInt(st.nextToken());
                     if (tmp != 0) {
-                        map[i + 150][j + 150] = new Cell(i, j, tmp, tmp * 2);
+                        map[i + 200][j + 200] = new Cell(i, j, tmp, tmp * 2);
                         // 초기 세팅 세포들 전부 큐에 삽입.
-                        q.offer(map[i + 150][j + 150]);
+                        q.offer(map[i + 200][j + 200]);
                     }
                 }
             }
 
-            // for문 속 for문? 배양시간이 정해져 있다. 현재 큐 크기만큼만 한 사이클씩 돌려준다.
+            // 현재 큐 크기만큼만 한 사이클씩 돌려준다.
             for (int i = 1; i <= K; i++) {
                 Queue<Cell> tmp = new ArrayDeque<>();
                 while (!q.isEmpty()) {
                     Cell c = q.poll(); // compareTo에 의해 높은 생명력 바이러스 부터 출력.
-                    c.life --;
+                    c.life--;
 
-                    if (c.life == c.level-1) {
-                        // 번식
+                    // 번식
+                    if (c.life == c.level - 1) {
                         for (int d = 0; d < 4; d++) {
                             int nx = c.x + dx[d];
                             int ny = c.y + dy[d];
                             // 셀이 비어 있다면
-                            if (map[nx + 150][ny + 150].level == -1) {
+                            if (map[nx + 200][ny + 200].level == -1) {
                                 // 새로운 세포 복제.
-                                Cell newCell = new Cell(nx, ny, c.level, c.level*2);
-                                map[nx + 150][ny + 150] = newCell;
+                                Cell newCell = new Cell(nx, ny, c.level, c.level * 2);
+                                map[nx + 200][ny + 200] = newCell;
                                 tmp.offer(newCell);
                             }
                         }
-                        if(c.life!=0){
-                            tmp.offer(c);
-                        }
                     }
 
-                    if(c.life>=1){
+                    // 수명이 남았다면 다시 큐에 삽입.
+                    if (c.life >= 1) {
                         tmp.offer(c);
                     }
                 }
+                // 임시큐 항목들을 우선 순위 큐로 이동.
                 while (!tmp.isEmpty()) {
                     q.offer(tmp.poll());
                 }
