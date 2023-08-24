@@ -1,67 +1,69 @@
+import com.sun.jdi.IntegerType;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Queue;
-import java.util.StringTokenizer;
+import java.net.Inet4Address;
+import java.util.*;
 
-// 촌수 계산
 public class Bj2644 {
-    static ArrayList<Data> [] list;
 
-    static class Data{
-        int y;
-        int w;
+    static ArrayList<Integer>[] list;
 
-        public Data(int y, int w) {
-            this.y = y;
-            this.w = w;
-        }
-
-        @Override
-        public String toString(){
-            return y + " " + w;
-        }
-    }
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
 
-        int n = Integer.parseInt(st.nextToken());
-        list = new ArrayList[n+1];
-        for(int i=0;i<=n;i++){
-            list[i] = new ArrayList();
+        int N = Integer.parseInt(st.nextToken()); // 전체 사람 수 N
+        list = new ArrayList[N+1];
+        int[] chonsu = new int[N+1]; // 촌수 저장 배열.
+        Arrays.fill(chonsu,-1); // -1로 초기화.
+
+        // 객체기에 하나마다 일일이 초기화 해주어야.
+        for(int i=1;i<=N;i++){
+            list[i] = new ArrayList<>();
         }
 
+        // 촌수 계산해야 하는 둘.
         st = new StringTokenizer(br.readLine());
         int a = Integer.parseInt(st.nextToken());
         int b = Integer.parseInt(st.nextToken());
 
+        // 촌수 관계 입력.
         st = new StringTokenizer(br.readLine());
         int m = Integer.parseInt(st.nextToken());
-
-        for(int i=0;i<m;i++){
+        for(int i=1;i<=m;i++){
             st = new StringTokenizer(br.readLine());
-            // 그래프 저장.
-            int x= Integer.parseInt(st.nextToken());
-            int y= Integer.parseInt(st.nextToken());
-            list[x].add(new Data(x,y));
-            list[y].add(new Data(y,x));
+            int parent = Integer.parseInt(st.nextToken());
+            int child = Integer.parseInt(st.nextToken());
+            list[parent].add(child);
+            list[child].add(parent);
         }
 
-//        for(ArrayList l : list){
-//            System.out.println(l.toString());
-//        }
+        Queue<Integer> q = new LinkedList<Integer>();
 
-        Queue<Integer> q = new ArrayDeque<>();
-        int[] isVisited = new int[n+1];
-        q.offer(a);
-        isVisited[a] = 1;
+         chonsu[a] = 0; // 자기자신은 0촌
+         q.add(a);
 
-        while(!q.isEmpty()){
+         int ans = -1;
 
-        }
+         // BFS
+         while(!q.isEmpty()){
+             int current = q.poll();
+             if(current == b){ // a -> 0 일때부터 b까지 닿았다면.
+                 ans = chonsu[current]; // current가 아닌 chonsu[current]
+                 break;
+             }
+
+             for(int i=0;i<list[current].size();i++){
+                 int tmp = list[current].get(i);
+                 if(chonsu[tmp] != -1) continue; // 이미 친척이면 패스
+                 chonsu[tmp] = chonsu[current] + 1; // 촌수 업데이트
+                 q.add(tmp);
+             }
+         }
+
+        System.out.println(ans);
 
     }
 }
