@@ -9,7 +9,7 @@ public class Bj14940 {
     static class Crd{
         int x;
         int y;
-        int dis;
+        int dis; // 거리
 
         public Crd(int x, int y, int dis) {
             this.x = x;
@@ -30,13 +30,16 @@ public class Bj14940 {
 
         Crd start = new Crd(0,0,0);
 
+        // 입력
         for(int i=0;i<n;i++){
             st = new StringTokenizer(br.readLine());
             for(int j=0;j<m;j++){
                 int tmp = Integer.parseInt(st.nextToken());
+                // 1을 -1로 바꿔서 기록.
                 if(tmp == 1){
                     map[i][j] = -1;
                 } else if (tmp == 2){
+                    // 2면 시작 위치.
                     start = new Crd(i,j,0);
                 } else {
                     map[i][j] = tmp;
@@ -46,9 +49,11 @@ public class Bj14940 {
 
         Queue<Crd> q = new ArrayDeque<>();
 
+        // 출발 위치 큐에 넣기.
         q.add(start);
         map[start.x][start.y] = 0;
 
+        // BFS
         while(!q.isEmpty()){
             Crd now = q.poll();
 
@@ -57,6 +62,8 @@ public class Bj14940 {
                 int ny = now.y + dy[d];
 
                 if(nx<0||nx>=n||ny<0||ny>=m) continue;
+
+                // 방문 안 한 곳이면 이동거리 넣고 큐에 넣기.
                 if(map[nx][ny] == -1){
                     map[nx][ny] = now.dis+1;
                     q.add(new Crd(nx,ny,now.dis+1));
@@ -64,6 +71,7 @@ public class Bj14940 {
             }
         }
 
+        // 출력.
         for(int i=0;i<n;i++){
             for(int j=0;j<m;j++){
                 System.out.print(map[i][j] + " ");

@@ -40,7 +40,7 @@ public class Bj2636 {
             }
         }
 
-        // 시간. 2부터 시작.
+        // 시간. 2부터 시작. 맵의 0,1과 겹치면 안 되니까. 나중에 1빼면 됨.
         for (int t = 2; ; t++) {
             Queue<Cheese> q = new ArrayDeque();
             int[][] visited = new int[N][M];
@@ -49,6 +49,7 @@ public class Bj2636 {
             q.add(new Cheese(0, 0, t));
             visited[0][0] = 1;
 
+            // BFS
             while (!q.isEmpty()) {
                 Cheese n = q.poll();
 
@@ -63,7 +64,7 @@ public class Bj2636 {
                     if(visited[nx][ny] == 1) continue;
 
                     visited[nx][ny] = 1;
-                    // 녹은 시간을 적는다. 아니면 q에 넣는다.
+                    // 치즈면 녹은 시간을 적는다. 아니면 q에 넣는다.
                     if (map[nx][ny] == 1) {
                         map[nx][ny] = t;
                     } else {
@@ -71,15 +72,19 @@ public class Bj2636 {
                     }
                 }
             }
+
             int finish = 1;
             loop: for (int i = 0; i < N; i++) {
                 for (int j = 0; j < M; j++) {
+                    // 안 녹은 치즈가 있다면 끝나지 않은 것..
                     if (map[i][j] == 1){
                         finish = 0;
                         break;
                     }
                 }
             }
+
+            // 끝났으면 맵에 마지막 초가 기록 된 곳(마지막에 녹은 치즈들)을 찾아 모두 더한다.
             if (finish == 1) {
                 int cnt = 0;
                 for (int i = 0; i < N; i++) {
@@ -89,8 +94,8 @@ public class Bj2636 {
                         }
                     }
                 }
-                System.out.println(t-1);
-                System.out.println(cnt);
+                System.out.println(t-1); // 2부터 시작했으므로 1빼서 출력.
+                System.out.println(cnt); // 마지막에 녹은 치즈 개수 출력.
                 break;
             }
         }

@@ -13,7 +13,7 @@ public class Bj16954 {
     static class Character{
         int x;
         int y;
-        int time;
+        int time; // 시간
 
         public Character(int x, int y, int time) {
             this.x = x;
