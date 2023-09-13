@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-public class Cb1_새로운불면증치료법 {
+public class Cb2_이진수표현 {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
@@ -15,18 +15,25 @@ public class Cb1_새로운불면증치료법 {
         for(int t = 1;t<=T;t++){
             st = new StringTokenizer(br.readLine());
             int N = Integer.parseInt(st.nextToken());
-            int binaryCheck = 0;
-            int sheep = 0;
-            while(binaryCheck != (1 << 10) - 1){
-                sheep+=1;
-                int tmp = N*sheep;
-                while(tmp!=0){
-                    binaryCheck |= 1 << (tmp % 10);
-                    tmp/=10;
-                }
-            }
-            System.out.printf("#%d %d\n",t,sheep*N);
+            int M = Integer.parseInt(st.nextToken());
 
+            int ans = 1;
+
+            for(int i=0;i<N;i++){
+                if(M%2==0){
+                    ans =0;
+                    break;
+                }
+                M/=2;
+            }
+
+            if(ans == 1){
+                System.out.printf("#%d ON",t);
+            }
+            else if(ans == 0){
+                System.out.printf("#%d OFF",t);
+            }
+            System.out.println();
         }
     }
 }
