@@ -11,7 +11,7 @@ public class Bj19637 {
 
     static int binarySearch(int str, int end, int target){
         int mid = (str+end) / 2;
-        if(str>end) return str;
+        if(end < str) return str; // ~까지 칭호를 주니까 str
 
         if(titleValue[mid] == target) return mid;
         else{
@@ -39,6 +39,7 @@ public class Bj19637 {
             st = new StringTokenizer(br.readLine());
             title[i] = st.nextToken();
             titleValue[i] = Integer.parseInt(st.nextToken());
+            // 값이 앞과 같을 시 타이틀 통일.
             if(i>0 && titleValue[i-1] == titleValue[i]) title[i] = title[i-1];
         }
 

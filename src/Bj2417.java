@@ -26,6 +26,7 @@ public class Bj2417 {
         String s = br.readLine();
         long l = Long.parseLong(s);
 
+        // 5-6자리 수 -> 3자리 수의 제곱. -> 100 ~ 999 사이.
         int len = s.length();
         long str = (long)Math.pow(10,(len-1) / 2);
         long end = str * 10;
