@@ -3,9 +3,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
 
-// 연구소 2
+// 연구소 3
 // dfs + bfs
 // 순열로 하면 시간 초과.
+
+// 실패.. 비활성 -> 활성
+// 다시 코드 짜기.
 public class Bj17142 {
     static class Virus{
         int x;
@@ -52,16 +55,14 @@ int zero;
             }
             int maxTime = 0;
             // BFS
+            int zeroCount = zeroCnt;
 
             while(!q.isEmpty()){
                 Virus v = q.poll();
-                if(v.zero == 0){
-                    copyMap[v.x][v.y] = v.time-1;
+                if(zeroCnt == 0){
+                    //copyMap[v.x][v.y] = v.time-1;
                     break;
                 }
-                maxTime = v.time;
-
-                int zeroCount = zeroCnt;
 
                 for(int d=0;d<4;d++){
                     int nx = v.x + dx[d];
@@ -74,10 +75,9 @@ int zero;
                         visited[nx][ny] = 1;
                         copyMap[nx][ny] = v.time+1;
                         if(copyMap[nx][ny] == 0){
-                            q.add(new Virus(nx,ny,v.time+1,v.zero--));
-                        } else{
-                            q.add(new Virus(nx,ny,v.time+1,v.zero));
+                            zeroCount--;
                         }
+                        q.add(new Virus(nx,ny,v.time+1,v.zero));
                     }
                 }
             }
@@ -85,6 +85,8 @@ int zero;
             for(int i=0;i<N;i++){
                 for(int j=0;j<N;j++){
                     if(copyMap[i][j] ==0) return;
+                    if(copyMap[i][j] == -2 || copyMap[i][j] == -1) continue;
+                    if(maxTime > copyMap[i][j]) maxTime = copyMap[i][j];
                 }
             }
 
@@ -137,8 +139,9 @@ int zero;
 
         select(0,0);
         if(min == 2500) System.out.println(-1);
-        else {
-            System.out.println(min-2);
+        else{
+            System.out.println(min);
         }
+
     }
 }
