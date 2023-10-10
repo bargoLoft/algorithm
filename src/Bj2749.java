@@ -2,26 +2,25 @@ import java.io.*;
 import java.util.*;
 
 // 피보나치 수 3
-// DP
+// DP x
+// 그냥 피사노 주기
+// 10의 거듭제곱의 나머지는 15 * 10^(n-1) 의 주기를 갖는다.
 
 public class Bj2749 {
-    static Long[] fibonacciSave;
-    static Long fibonacci(int n){
-        if(fibonacciSave[n]!=-1L){
-            return fibonacciSave[n];
-        } else{
-            return fibonacciSave[n] =  (fibonacci(n-1)+fibonacci(n-2));
-        }
-    }
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        fibonacciSave = new Long[100];
-        Arrays.fill(fibonacciSave,-1L);
-        fibonacciSave[0] = 0L;
-        fibonacciSave[1] = 1L;
+        long N = Long.parseLong(br.readLine());
+        N = N%(15*1000000);
 
-        int N = Integer.parseInt(br.readLine());
-        System.out.println(fibonacci(N));
+        long prev = 0;
+        long cur = 1;
+        for(int i=0;i<N-1;i++){
+            long tmp = (prev + cur) % 1000000;
+            prev = cur;
+            cur = tmp;
+        }
+
+        System.out.println(cur);
     }
 }

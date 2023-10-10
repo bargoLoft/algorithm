@@ -25,6 +25,7 @@ public class Main {
         }
     }
 
+    // 회원가입
     static void make_user() throws Exception{
         System.out.print("아이디를 입력하시오\n>>>>> ");
         String id = in.nextLine();
@@ -34,6 +35,7 @@ public class Main {
         System.out.println("회원가입이 완료 되었습니다.\n");
     }
 
+    // 로그인
     static void login() throws Exception{
         System.out.print("ID : ");
         String id = in.nextLine();

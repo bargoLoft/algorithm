@@ -33,6 +33,7 @@ public class DB {
         return err;
     }
 
+    // DB 데이터 출력.
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for(String[] temp : UserData) {
