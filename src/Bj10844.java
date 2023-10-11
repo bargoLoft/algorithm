@@ -1,6 +1,6 @@
 import java.io.*;
 import java.util.*;
-
+// 계단 수
 public class Bj10844 {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
