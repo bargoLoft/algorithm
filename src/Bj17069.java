@@ -18,6 +18,7 @@ public class Bj17069 {
         int dx[] = {0,1,1};
         int dy[] = {1,0,1};
 
+        // 입력
         for(int i=0;i<N;i++){
             st = new StringTokenizer(br.readLine());
             for(int j=0;j<N;j++){
@@ -39,23 +40,10 @@ public class Bj17069 {
 
                     mapD[i][j][d] = mapD[bx][by][0] + mapD[bx][by][1] + mapD[bx][by][2];
                     if(d!=2) mapD[i][j][d] -= mapD[bx][by][(d+1)%2];
-//                    if(d==2 && map[i-1][j] == 1) mapD[i][j][d] -= mapD[bx][by][0];
-//                    if(d==2 && map[i][j-1] == 1) mapD[i][j][d] -= mapD[bx][by][1];
                 }
             }
         }
-//        for(int d=0;d<3;d++){
-//            for(int i=0;i<N;i++){
-//                for(int j=0;j<N;j++){
-//                    System.out.print(mapD[i][j][d]+" ");
-//                }
-//                System.out.println();
-//            }
-//
-//            System.out.println("----------");
-//        }
 
         System.out.println(mapD[N-1][N-1][0] + mapD[N-1][N-1][1] + mapD[N-1][N-1][2]);
-
     }
 }
