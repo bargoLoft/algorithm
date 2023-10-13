@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Bj9655 {
+public class Bj9657 {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
@@ -12,12 +12,11 @@ public class Bj9655 {
 
         // DP
         for(int i=0;i<stone.length;i++){
-            dp[stone[i]] = 'C';
+            dp[stone[i]] = 'S';
         }
 
         for(int i=1;i<N;i++){
             for(int j=0;j<stone.length;j++){
-                //
                 if(dp[i+stone[j]]!='S'){
                     if(dp[i]=='S'){
                         dp[i+stone[j]] = 'C';

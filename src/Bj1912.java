@@ -21,7 +21,5 @@ public class Bj1912 {
         }
 
         System.out.println(max);
-
-
     }
 }
