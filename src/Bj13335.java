@@ -52,7 +52,5 @@ public class Bj13335 {
         time+=W;
 
         System.out.println(time);
-
-
     }
 }
