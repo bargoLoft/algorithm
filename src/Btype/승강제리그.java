@@ -50,7 +50,7 @@ class 승강제리그 {
     public static void main(String[] args) throws Exception {
         int T, MARK;
 
-        // System.setIn(new java.io.FileInputStream("res/sample_input.txt"));
+        System.setIn(new java.io.FileInputStream("/Users/bagchangjun/IdeaProjects/algorithm/src/Btype/sample_input.txt"));
         sc = new Scanner(System.in);
         T = sc.nextInt();
         MARK = sc.nextInt();
@@ -61,50 +61,148 @@ class 승강제리그 {
         }
         sc.close();
     }
-}
 
-class UserSolution {
-    class Player {
-        int id;
-        int ability;
+    static class UserSolution {
+        class Player implements Comparable<Player>{
+            int id;
+            int ability;
 
-        public Player(int id, int ability){
-            this.id = id;
-            this.ability = ability;
+            public Player(int id, int ability){
+                this.id = id;
+                this.ability = ability;
+            }
+
+            @Override
+            public int compareTo(Player player){
+                if(this.ability == player.ability){
+                    return -(this.id-player.id);
+                }
+                else return this.ability - player.ability;
+            }
         }
-    }
 
-    class League{
-        List<Player> players = new ArrayList<>();
+        class League{
+            PriorityQueue<Player> maxHeapUpper = new PriorityQueue<>(Collections.reverseOrder());
+            PriorityQueue<Player> minHeapUpper = new PriorityQueue<>();
+            PriorityQueue<Player> maxHeapLower = new PriorityQueue<>(Collections.reverseOrder());
+            PriorityQueue<Player> minHeapLower = new PriorityQueue<>();
 
-        public void addPlayer(Player player){
-            players.add(player);
+            public void addPlayer(Player player){
+                if(minHeapUpper.isEmpty() || player.ability >= minHeapUpper.peek().ability){
+                    maxHeapUpper.add(player);
+                    minHeapUpper.add(player);
+                } else {
+                    maxHeapLower.add(player);
+                    minHeapLower.add(player);
+                }
+
+                // 하위권이 더 많아지면 상위권으로 옮김
+                while(maxHeapLower.size() > maxHeapUpper.size()){
+                    Player toMove = maxHeapLower.poll();
+                    minHeapLower.remove(toMove);
+                    maxHeapUpper.add(toMove);
+                    minHeapUpper.add(toMove);
+                }
+
+                // 상위권이 하위권과 2명 차이가 나면 하위권으로 옮김
+                while(maxHeapUpper.size() > maxHeapLower.size()+1){
+                    Player toMove = minHeapUpper.poll();
+                    maxHeapUpper.remove(toMove);
+                    maxHeapLower.add(toMove);
+                    minHeapLower.add(toMove);
+                }
+            }
+
+            public Player removeBestPlayer(){
+                Player bestPlayer = maxHeapUpper.poll();
+                minHeapUpper.remove(bestPlayer);
+                return bestPlayer;
+            }
+
+            public Player removeWorstPlayer(){
+                Player worstPlayer = minHeapLower.poll();
+                maxHeapLower.remove(worstPlayer);
+                return worstPlayer;
+            }
+
+            public Player removeMidPlayer(){
+                Player midPlayer = minHeapUpper.poll();
+                maxHeapUpper.remove(midPlayer);
+                return midPlayer;
+            }
         }
 
-        public void sortPlayers(){
-            Collections.sort(players, (p1,p2) ->{
-               if(p1.ability == p2.ability) return p1.id - p2.id;
-               return p2.ability - p1.ability;
-            });
-        }
-    }
-
-    public class LeagueSystem{
         League[] leagues;
+        int leaguesLength;
 
         void init(int N, int L, int mAbility[]) {
+            leagues = new League[L];
+            leaguesLength = L;
+
+            for(int i=0;i<L;i++){
+                leagues[i] = new League();
+            }
+
+            for(int i=0; i<N;i++){
+                int leagueIndex = i / (N / L);
+                Player player = new Player(i, mAbility[i]);
+                leagues[leagueIndex].addPlayer(player);
+            }
         }
 
         int move() {
-            return 0;
+            ArrayList<Player> worstPlayers = new ArrayList<>();
+            ArrayList<Player> bestPlayers = new ArrayList<>();
+            int sumOfMovedPlayerIds = 0;
+
+            // 먼저 교환할 선수들을 결정합니다.
+            for (int i = 0; i < leaguesLength - 1; i++) {
+                Player worstPlayerCurrent = leagues[i].removeWorstPlayer();
+                Player bestPlayerNext = leagues[i + 1].removeBestPlayer();
+                worstPlayers.add(worstPlayerCurrent);
+                bestPlayers.add(bestPlayerNext);
+            }
+
+            // 결정된 선수들을 교환합니다.
+            for (int i = 0; i < leaguesLength - 1; i++) {
+                Player worstPlayerCurrent = worstPlayers.get(i);
+                Player bestPlayerNext = bestPlayers.get(i);
+                leagues[i].addPlayer(bestPlayerNext);
+                leagues[i + 1].addPlayer(worstPlayerCurrent);
+                sumOfMovedPlayerIds += bestPlayerNext.id;
+                sumOfMovedPlayerIds += worstPlayerCurrent.id;
+            }
+
+            return sumOfMovedPlayerIds;
         }
 
         int trade() {
-            return 0;
+            ArrayList<Player> midPlayers = new ArrayList<>();
+            ArrayList<Player> bestPlayers = new ArrayList<>();
+            int sumOfMovedPlayerIds = 0;
+
+            // 먼저 교환할 선수들을 결정합니다.
+            for (int i = 0; i < leaguesLength - 1; i++) {
+                Player midPlayerCurrent = leagues[i].removeMidPlayer();
+                Player bestPlayerNext = leagues[i + 1].removeBestPlayer();
+                midPlayers.add(midPlayerCurrent);
+                bestPlayers.add(bestPlayerNext);
+            }
+
+            // 결정된 선수들을 교환합니다.
+            for (int i = 0; i < leaguesLength - 1; i++) {
+                Player midPlayerCurrent = midPlayers.get(i);
+                Player bestPlayerNext = bestPlayers.get(i);
+                leagues[i].addPlayer(bestPlayerNext);
+                leagues[i + 1].addPlayer(midPlayerCurrent);
+                sumOfMovedPlayerIds += bestPlayerNext.id;
+                sumOfMovedPlayerIds += midPlayerCurrent.id;
+            }
+
+            return sumOfMovedPlayerIds;
         }
     }
 
-
-
 }
+
 
