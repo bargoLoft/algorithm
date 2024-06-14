@@ -7,7 +7,6 @@ import java.util.*;
 public class Bj1406 {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
         String s = br.readLine();
         LinkedList<Character> list = new LinkedList<>();
 

@@ -3,6 +3,11 @@ package Btype;
 import java.util.*;
 import java.io.*;
 
+// 각 리그의 최고, 중간, 최악의 선수를 골라내야한다.
+// 최대 힙, 최소 힙 -> 최고, 최악만 뽑기 가능
+// 상위권 최대, 최소 힙 / 하위권 최대, 최소 힙 -> 중간값 뽑기 가능!
+// for문 순서대로 변경하면 이전 for문의 변경이 다음에 영향을 주므로 교환할 선수를 기억해두고 한 번에 교환.
+
 class 승강제리그 {
 
     private static Scanner sc;
