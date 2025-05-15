@@ -1,6 +1,9 @@
+package 수학;
+
 import java.io.*;
 import java.util.*;
 
+// 약수
 public class Bj1037 {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));

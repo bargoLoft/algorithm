@@ -1,3 +1,5 @@
+package 분할정복_재귀;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
